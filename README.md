@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> ed88cfad9348b253152e3f1bdae44e7d72366305
-
-# <span style= 'color:#D14129' <u>Curriculum Assurance Team </u>
 ### Curriculum_Engagement_and_Usage_Analysis
 
 
@@ -52,11 +46,8 @@ Please feel free to provide any additional guidance or clarification, and we wil
 
 
 **Recommendations**
-<<<<<<< HEAD
 =======
 # Curriculum_Engagement_and_Usage_Analysis
 
 Test
 >>>>>>> 0a8d2bc96212045b42ac24985d592b409aea9978
-=======
->>>>>>> ed88cfad9348b253152e3f1bdae44e7d72366305
