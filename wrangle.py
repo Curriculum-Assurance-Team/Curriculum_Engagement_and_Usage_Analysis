@@ -3,8 +3,9 @@ import env
 import os
 
 
-def get_connection(db, user=env.user, host=env.host, password=env.password):
-    return f'mysql+pymysql://{user}:{password}@{host}/{db}'
+def get_connection(db, user=env.user, hostname=env.hostname, password=env.password):
+    return f'mysql+pymysql://{user}:{password}@{hostname}/{db}'
+    
     
 def get_sql_data():
     '''
@@ -27,11 +28,14 @@ def get_sql_data():
         user = env.user  # Replace with the actual value
         hostname = env.hostname  # Replace with the actual value
         password = env.password  # Replace with the actual value
+        
         # Create a database connection using SQLAlchemy
         connection_string = get_connection(db, user, hostname, password)
         engine = create_engine(connection_string)
+        
         # Fetch data from the database and convert it into a DataFrame
         logs_df = pd.read_sql(sql_query, get_connection('curriculum_logs'))
+        
         # Convert 'date' and 'time' columns to a single 'datetime' column
         logs_df['date'] = pd.to_datetime(logs_df['date'] + ' ' + logs_df['time'])
         logs_df = logs_df.drop(['time'], axis=1)  # Drop 'time' column
@@ -40,8 +44,10 @@ def get_sql_data():
         # Replace program_id numbers with program names using the replace method
         program_mapping = {1: 'web dev', 2: 'web dev', 3: 'data science', 4: 'frontend'}
         logs_df['program'] = logs_df['program_id'].replace(program_mapping)
+        
         # Save the DataFrame as a CSV file
         logs_df.to_csv(filename, index=False)
+        
         return logs_df
 
 # # Upload with code
