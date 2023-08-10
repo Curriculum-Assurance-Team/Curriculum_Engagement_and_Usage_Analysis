@@ -1,7 +1,7 @@
 # Curriculum_Engagement_and_Usage_Analysis
-Team: Annie Carter Miatta Sinayoko and Martin Reyes
-Sourced by CodeUp, LLC
-![image](filename='CAT_logo2.png'))
+- Team: Annie Carter, Miatta Sinayoko, and Martin Reyes
+- Sourced by CodeUp, LLC
+![image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgG55eAx6SYJA0sh2VfEBE60TYLs6K_hKcVQjL-0J8rEDVmMkcTCRLf8C4Je3Gd5xCWi0&usqp=CAU)
 
 ## **Project Description:**
 In preparation for the upcoming board meeting on Thursday afternoon, we are conducting an analysis of our educational curriculum's usage patterns and identifying any potential anomalies or concerns. The purpose of this project is to provide insights into the engagement levels of different cohorts with our curriculum, detect any suspicious activities, and uncover trends related to post-graduation knowledge retention. By addressing the specific questions provided, we aim to equip you with comprehensive information to discuss and make informed decisions during the board meeting.
