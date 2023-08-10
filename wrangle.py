@@ -16,7 +16,7 @@ from io import BytesIO
 from io import StringIO
 from tabulate import tabulate
 
-def get_connection(db, user=env.user, hostname=env.hostname, password=env.password):
+def get_connection(db, user=user, hostname=hostname, password=password):
     return f'mysql+pymysql://{user}:{password}@{hostname}/{db}'
     
     
@@ -54,8 +54,7 @@ def get_sql_data():
         logs_df = logs_df.drop(['time'], axis=1)  # Drop 'time' column
         logs_df = logs_df.set_index('date')
         
-        logs_df['start_date'] = pd.to_datetime(logs_df['start_date'])
-        logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
+
         logs_df['access_day'] = logs_df.index.day_name()
         logs_df['access_month'] = logs_df.index.month
         logs_df['access_year'] = logs_df.index.year
@@ -144,7 +143,7 @@ def question2_1(logs_df):
 # - Data Science: SQL, Classification, Anomaly Detection
 # - Web Dev: Spirng, HTML/CSS, Java
 
-def plot_monthly_avg_ds_logs():
+def plot_monthly_avg_ds_logs(logs_df):
     """
     Plots the average monthly logs for Data Science students.
     """
@@ -178,7 +177,7 @@ def plot_monthly_avg_ds_logs():
     sns.despine()
     plt.show()
     
-def plot_monthly_avg_wd_logs():
+def plot_monthly_avg_wd_logs(logs_df):
     """
     Plots the average monthly logs for Web Development students.
     """
@@ -215,10 +214,11 @@ def plot_monthly_avg_wd_logs():
     
 #### Question 6
 
-def plot_top_ds_alumni_lessons():
+def plot_top_ds_alumni_lessons(logs_df):
     """
     Plots the top logged lessons for Data Science alumni.
     """
+    logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
     # Filter logs for Data Science alumni
     ds_alumni_logs = logs_df[(logs_df['program_id'] == 'data science') &
                         (logs_df.index > df['end_date']) &
@@ -243,10 +243,11 @@ def plot_top_ds_alumni_lessons():
     plt.show()
     
     
-def plot_top_wb_alumni_lessons():
+def plot_top_wb_alumni_lessons(logs_df):
     """
     Plots the top logged lessons for Web Development alumni.
     """
+    logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
     # Filter logs for Web Development alumni
     wb_alumni_logs = logs_df[(logs_df['program'] != 'data science') &
                         (logs_df.index > df['end_date']) &
