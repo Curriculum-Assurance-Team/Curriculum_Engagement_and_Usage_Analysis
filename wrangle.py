@@ -4,7 +4,7 @@ import numpy as np
 import os
 #CAT Team Libraries
 # import wrangle as w
-from env import user, hostname, password
+import env
 # Visualization Libraries
 import urllib.parse
 import gzip
@@ -16,7 +16,7 @@ from io import BytesIO
 from io import StringIO
 from tabulate import tabulate
 
-def get_connection(db, user=user, hostname=hostname, password=password):
+def get_connection(db, user=env.user, hostname=env.hostname, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{hostname}/{db}'
     
     
