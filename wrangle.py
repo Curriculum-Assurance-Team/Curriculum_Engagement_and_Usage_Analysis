@@ -51,6 +51,57 @@ def get_sql_data():
 
 
 
+#######################################
+# Questions 2
+
+def question2_2graph(logs_df):
+    '''This function groups data by cohort and lesson to determine the lesson with the highest and lowest counts by cohort'''
+    # Group data by cohort and lesson, then calculate the size (count of occurrences)
+    cohort2 = logs_df.groupby(['cohort', 'lesson']).size()
+    # Reset the index and rename the count column
+    cohort2 = cohort2.reset_index(name='count')
+    # Filter the DataFrame to show only the rows where lesson is '/' and  count in descending order
+    cohort2 = cohort2.loc[cohort2['lesson'] == '/'].sort_values(by='count', ascending=False)
+    # Plotting
+    plt.figure(figsize=(12, 6))
+    sns.barplot(data=cohort2, x='cohort', y='count', palette='Oranges')
+    plt.xlabel('Cohort')
+    plt.ylabel('Lesson / Count')
+    plt.title('Lesson with Highest Count by Cohort')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
+
+    
+def question2_2(logs_df):
+    '''This function groups data by cohort and lesson to determine the lesson with the highest and lowest counts by cohort'''
+    # Group data by cohort and lesson, then calculate the size (count of occurrences)
+    cohort2 = logs_df.groupby(['cohort', 'lesson']).size()
+    # Reset the index and rename the count column
+    cohort2 = cohort2.reset_index(name='count')
+    # Filter the DataFrame to show only the rows where lesson is '/' and  count in descending order
+    cohort2 = cohort2.loc[cohort2['lesson'] == '/'].sort_values(by='count', ascending=False)
+    return cohort2.head(), cohort2.tail()
+
+def question2_1(logs_df):
+    '''This function determines which lesson was most and least refered to by cohort'''
+    #Find lesson counts"
+    lesson_counts = logs_df.groupby('lesson')[['cohort', 'start_date','user_id']].nunique()
+    lesson_counts = lesson_counts.sort_values(by='cohort', ascending=False)
+    # Find the lesson that was refered to the most 
+    most_referred_cohort = lesson_counts['cohort'].idxmax()
+    most_referred_count = lesson_counts.loc[most_referred_cohort, 'cohort']
+    
+    # Find the lesson that referred to the the least
+    least_referred_cohort = lesson_counts['cohort'].idxmin()
+    least_referred_count = lesson_counts.loc[least_referred_cohort, 'cohort']
+    
+    print(f"The lesson that was referred to the the most: {most_referred_cohort} with {most_referred_count} referrals.")
+    print(f"The lesson that referred to the the least: {least_referred_cohort} with {least_referred_count} referrals.")
+
+# Questions 2
+#######################################
+
 
 
 
@@ -195,3 +246,6 @@ def plot_top_wb_alumni_lessons():
 
 # Questions 5 and 6
 #######################################
+
+
+
