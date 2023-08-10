@@ -1,8 +1,20 @@
+ # Transform Libraries
 import pandas as pd
-import env
+import numpy as np
 import os
+#CAT Team Libraries
+# import wrangle as w
+from env import user, hostname, password
+# Visualization Libraries
+import urllib.parse
+import gzip
+import seaborn as sns
+import matplotlib.pyplot as plt
+# Misc.  Libraries
 from sqlalchemy import create_engine
-
+from io import BytesIO
+from io import StringIO
+from tabulate import tabulate
 
 def get_connection(db, user=env.user, hostname=env.hostname, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{hostname}/{db}'
@@ -16,7 +28,7 @@ def get_sql_data():
     '''
     filename = 'curriculum_logs.csv'
     if os.path.isfile(filename):
-        return pd.read_csv(filename)
+        return pd.read_csv(filename, index_col='date', parse_dates=True)
     else:
         # Define SQL query, database parameters, and filename
         sql_query = """
@@ -42,14 +54,20 @@ def get_sql_data():
         logs_df = logs_df.drop(['time'], axis=1)  # Drop 'time' column
         logs_df = logs_df.set_index('date')
         
+        logs_df['start_date'] = pd.to_datetime(logs_df['start_date'])
+        logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
+        logs_df['access_day'] = logs_df.index.day_name()
+        logs_df['access_month'] = logs_df.index.month
+        logs_df['access_year'] = logs_df.index.year
+        
         # Replace program_id numbers with program names using the replace method
         program_mapping = {1: 'web dev', 2: 'web dev', 3: 'data science', 4: 'frontend'}
         logs_df['program'] = logs_df['program_id'].replace(program_mapping)
         
         # Save the DataFrame as a CSV file
-        logs_df.to_csv(filename, index=False)
+        logs_df.to_csv(filename)
         
-        return logs_df
+        return pd.read_csv(filename, index_col='date', parse_dates=True)
 
 # # Upload with code
 # import wrangle as w
@@ -140,7 +158,7 @@ def plot_monthly_avg_ds_logs():
     ds_monthly_avgs =  ds_logs.resample('M').size()
 
     # Create a line plot using Seaborn
-    sns.lineplot(ds_monthly_avgs)
+    sns.lineplot(ds_monthly_avgs, color = '#D16002')
 
     # Set the x-axis tick positions and labels
     tick_positions = pd.date_range(start='2019-01-01', end='2020-07-01', freq='6M')
@@ -150,7 +168,7 @@ def plot_monthly_avg_ds_logs():
     # Set plot labels and title
     plt.xlabel('Date')
     plt.ylabel('Average Logs')
-    plt.title('Average Logs of Data Science')
+    plt.title('Average Logs of Data Science Students')
 
     # Set x-axis limits
     plt.xlim(pd.Timestamp('2019-01-01'), pd.Timestamp('2020-07-01'))
@@ -174,7 +192,7 @@ def plot_monthly_avg_wd_logs():
     wd_monthly_avgs = wd_logs.resample('M').size()
 
     # Create a line plot using Seaborn
-    sns.lineplot(wd_monthly_avgs)
+    sns.lineplot(wd_monthly_avgs, color = '#D16002')
 
     # Set the x-axis tick positions and labels
     tick_positions = pd.date_range(start='2019-01-01', end='2020-07-01', freq='6M')
@@ -184,7 +202,7 @@ def plot_monthly_avg_wd_logs():
     # Set plot labels and title
     plt.xlabel('Date')
     plt.ylabel('Average Logs')
-    plt.title('Average Logs of Web Dev Students')
+    plt.title('Average Logs of Web Development Students')
 
     # Set x-axis limits
     plt.xlim(pd.Timestamp('2019-01-01'), pd.Timestamp('2020-07-01'))
@@ -194,6 +212,8 @@ def plot_monthly_avg_wd_logs():
     sns.despine()
     plt.show()
 
+    
+#### Question 6
 
 def plot_top_ds_alumni_lessons():
     """
