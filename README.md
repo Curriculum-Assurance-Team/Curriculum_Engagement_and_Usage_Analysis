@@ -1,6 +1,7 @@
 ### Curriculum_Engagement_and_Usage_Analysis
 
-
+from IPython.display import Image, display
+display(Image(filename='CAT_logo2.png'))
 **Project Description:**
 In preparation for the upcoming board meeting on Thursday afternoon, we are conducting an analysis of our educational curriculum's usage patterns and identifying any potential anomalies or concerns. The purpose of this project is to provide insights into the engagement levels of different cohorts with our curriculum, detect any suspicious activities, and uncover trends related to post-graduation knowledge retention. By addressing the specific questions provided, we aim to equip you with comprehensive information to discuss and make informed decisions during the board meeting.
 
@@ -21,6 +22,15 @@ In preparation for the upcoming board meeting on Thursday afternoon, we are cond
 
 8. **Unanticipated Insights:** In addition to the specified questions, proactively uncover any other significant findings, trends, or insights that could be valuable for decision-making.
 
+**Initial Questions**
+1. Identify the lesson that consistently garners the highest traffic across cohorts within each program?
+2. Is there a particular cohort that has demonstrated significantly higher engagement with a specific lesson than other cohorts, warranting further investigation?
+3. Identify instances of active students who exhibit minimal interaction with the curriculum? If so,provide insights into these students' behavior and engagement patterns?
+4. Detect any potentially unauthorized access or suspicious activities, including unusual access patterns or indications of web scraping? Are there any indications of suspicious IP addresses?
+5. Has the access for students and alumni to both curriculums (web development to data science, data science to web development) been disabled as intended at some point in 2019? Confirm if this change was implemented and if so, when?
+6. Outline the topics that graduates continue to reference beyond their graduation and into their professional roles for both programs?
+7. Which lessons have recorded the lowest levels of access?
+8. Is there any additional information or insights that you believe would be pertinent for me to be aware of?
 
 **Instructions to Reproduce the Final Project Notebook**
 To successfully run/reproduce the final project notebook, please follow these steps:
