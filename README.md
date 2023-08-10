@@ -34,12 +34,12 @@ The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially co
 
 |    Original Columns Name    |   Feature    |       Data Type         |     Definition                |
 |-----------------------------|--------------|------------------------ |------------------------------ |
-|date                         |date          | 847329 non-null Datetime| Date of access                |
+|date                         |date          | 847330 non-null Datetime| Date of access                |
 |time                         |time          | 847330 non-null  object | Time                          |
 |l.path                       |lesson        | 847330 non-null  object | Lesson path                   | 
 |user_ID                      |user_ID       | 847330 non-null  int64  | user identification           |    
 |c.name                       |cohort        | 847330 non-null  object |Cohort name (e.g. Darden)/Staff|
-|program_ID                   |program_ID    | 847330 non-null  int64  |Program name(e.g. Data Science)|
+|program_ID                   |program       | 847330 non-null  int64  |Program name(e.g. Data Science)|
 |ip                           |ip            | 847330 non-null  object | Used for feature engineering  |
 |start_date                   |start_date    | 847330 non-null  object | Program Start Date            |
 |end_date                     |end_date      | 847330 non-null  object | Graduation Date               |
