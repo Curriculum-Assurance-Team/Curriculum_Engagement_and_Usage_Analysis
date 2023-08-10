@@ -8,21 +8,11 @@
 In preparation for the upcoming board meeting on Thursday afternoon, we are conducting an analysis of our educational curriculum's usage patterns and identifying any potential anomalies or concerns. The purpose of this project is to provide insights into the engagement levels of different cohorts with our curriculum, detect any suspicious activities, and uncover trends related to post-graduation knowledge retention. By addressing the specific questions provided, we aim to equip you with comprehensive information to discuss and make informed decisions during the board meeting.
 
 ## **Project Goals:**
-1. **Traffic Analysis and Popular Lessons:** Identify the lesson that consistently attracts the highest traffic across cohorts for each program. This analysis will provide insights into which topics are resonating well with our students.
+The primary objectives are:
 
-2. **Cohort-Specific Engagement:** Determine if any particular cohort exhibits significantly different behavior in terms of lesson engagement compared to others. Detect instances where certain cohorts appear to show heightened or decreased interest in specific lessons.
-
-3. **Low Engagement Students:** Identify and profile students who exhibit minimal engagement with the curriculum despite being active. Provide information on these students' characteristics and engagement patterns.
-
-4. **Anomaly Detection and Suspicious Activity:** Investigate and report any suspicious activities, unauthorized access, or web scraping attempts in the curriculum. Identify potential anomalous IP addresses and user/machine activities.
-
-5. **Cross-Curriculum Access:** Examine whether the access to both the web development and data science curricula was disabled as intended in 2019. Determine if there is evidence of the transition's timing and completion.
-
-6. **Post-Graduation Knowledge Retention:** Analyze which topics and lessons our graduates continue to reference in their jobs after completing each program. This insight will highlight the curriculum's lasting impact on their careers.
-
-7. **Underutilized Lessons:** Identify the lessons that are accessed the least by our students. This information will help us understand which areas might need improvement or additional attention.
-
-8. **Unanticipated Insights:** In addition to the specified questions, proactively uncover any other significant findings, trends, or insights that could be valuable for decision-making.
+1. Analyze lesson popularity across programs, cohort engagement differences, and low engagement student profiles to enhance curriculum effectiveness.
+2. Investigate anomalies, security breaches, and cross-curriculum access, while assessing post-graduation knowledge impact.
+3. Uncover insights from underutilized lessons and unexpected trends, providing comprehensive data for informed decision-making.
 
 ## **Initial Questions**
 1. Identify the lesson that consistently garners the highest traffic across cohorts within each program?
@@ -33,7 +23,27 @@ In preparation for the upcoming board meeting on Thursday afternoon, we are cond
 6. Outline the topics that graduates continue to reference beyond their graduation and into their professional roles for both programs?
 7. Which lessons have recorded the lowest levels of access?
 8. Is there any additional information or insights that you believe would be pertinent for me to be aware of?
+## **Data Dictionary**
+The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially containing 847,330 rows and 7 columns. The team distributed tasks to effectively utilize and manipulate the original dataframe in order to address the specified questions.
 
+|    Original Column Name     |   Target    |       Data Type          |       Definition              |
+|-----------------------------|-------------|--------------------------|------------------------------ |
+|        Various              |  Various    |      Various             | Target dependent on Question  |
+                                               
+
+
+|    Original Columns Name    |   Feature    |       Data Type         |     Definition                |
+|-----------------------------|--------------|------------------------ |------------------------------ |
+|date                         |date          | 847329 non-null Datetime| Date of access                |
+|time                         |time          | 847330 non-null  object | Time                          |
+|l.path                       |lesson        | 847330 non-null  object | Lesson path                   | 
+|user_ID                      |user_ID       | 847330 non-null  int64  | user identification           |    
+|c.name                       |cohort        | 847330 non-null  object |Cohort name (e.g. Darden)/Staff|
+|program_ID                   |program_ID    | 847330 non-null  int64  |Program name(e.g. Data Science)|
+|ip                           |ip            | 847330 non-null  object | Used for feature engineering  |
+|start_date                   |start_date    | 847330 non-null  object | Program Start Date            |
+|end_date                     |end_date      | 847330 non-null  object | Graduation Date               |
+    
 ## **Instructions to Reproduce the Final Project Notebook**
 To successfully run/reproduce the final project notebook, please follow these steps:
 
