@@ -36,9 +36,6 @@ def get_log_data():
     df['access_month'] = df.index.month
     df['access_year'] = df.index.year
     
-    program_mapping = {1: 'web dev', 2: 'web dev', 3: 'data science', 4: 'frontend'}
-    df['program'] = df['program_id'].map(program_mapping)
-    
     df.to_csv(filename)
     
     return df
