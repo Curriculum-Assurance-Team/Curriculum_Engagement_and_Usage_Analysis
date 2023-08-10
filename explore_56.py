@@ -10,7 +10,8 @@ import seaborn as sns
 
 #
 # 6. What topics are grads continuing to reference after graduation and into their jobs (for each program)?
-# - Data Science
+# - Data Science: SQL, Classification, Anomaly Detection
+# - Web Dev: Spirng, HTML/CSS, Java
 
 
 # Run in final nb as:
