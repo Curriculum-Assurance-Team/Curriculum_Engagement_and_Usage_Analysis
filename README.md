@@ -1,6 +1,7 @@
-# Curriculum_Engagement_and_Usage_Analysis
+# Curriculum Engagement and Usage Analysis
 - Team: Annie Carter, Miatta Sinayoko, and Martin Reyes
 - Sourced by CodeUp, LLC
+
 ![image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgG55eAx6SYJA0sh2VfEBE60TYLs6K_hKcVQjL-0J8rEDVmMkcTCRLf8C4Je3Gd5xCWi0&usqp=CAU)
 
 ## **Project Description:**
