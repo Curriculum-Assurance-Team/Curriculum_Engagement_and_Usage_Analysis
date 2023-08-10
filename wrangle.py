@@ -140,7 +140,7 @@ def plot_top_ds_alumni_lessons():
     # Filter logs for Data Science alumni
     ds_alumni_logs = df[(df['program_id'] == 3) &
                         (df.index > df['end_date']) &
-                        (df['name'] != 'Staff')]
+                        (df['cohort'] != 'Staff')]
     
     # Create a bar plot using Seaborn
     plt.figure(figsize=(7, 5))
@@ -168,7 +168,7 @@ def plot_top_wb_alumni_lessons():
     # Filter logs for Web Development alumni
     wb_alumni_logs = df[(df['program_id'] != 3) &
                         (df.index > df['end_date']) &
-                        (df['name'] != 'Staff')]
+                        (df['cohort'] != 'Staff')]
     
     # Extract and preprocess the value counts
     value_counts_result = wb_alumni_logs['lesson'].value_counts()[2:8]
