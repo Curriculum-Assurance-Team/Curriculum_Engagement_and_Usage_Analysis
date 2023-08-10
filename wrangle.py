@@ -36,6 +36,10 @@ def get_sql_data():
         logs_df['date'] = pd.to_datetime(logs_df['date'] + ' ' + logs_df['time'])
         logs_df = logs_df.drop(['time'], axis=1)  # Drop 'time' column
         logs_df = logs_df.set_index('date')
+        
+        # Replace program_id numbers with program names using the replace method
+        program_mapping = {1: 'web dev', 2: 'web dev', 3: 'data science', 4: 'frontend'}
+        logs_df['program'] = logs_df['program_id'].replace(program_mapping)
         # Save the DataFrame as a CSV file
         logs_df.to_csv(filename, index=False)
         return logs_df
@@ -72,7 +76,7 @@ def plot_monthly_avg_ds_logs():
     plt.figure(figsize=(5, 3))
 
     # Filter logs for Data Science program (program_id == 3)
-    ds_logs = df[df['program_id'] == 3]
+    ds_logs = df[df['program_id'] == 'data science']
 
     # Resample logs to calculate average monthly logs
     ds_monthly_avgs =  ds_logs.resample('M').size()
@@ -106,7 +110,7 @@ def plot_monthly_avg_wd_logs():
     plt.figure(figsize=(5, 3))
 
     # Filter logs for Web Development program (program_id != 3)
-    wd_logs = df[df['program_id'] != 3]
+    wd_logs = df[df['program_id'] != 'data science']
 
     # Resample logs to calculate average monthly logs
     wd_monthly_avgs = wd_logs.resample('M').size()
@@ -138,7 +142,7 @@ def plot_top_ds_alumni_lessons():
     Plots the top logged lessons for Data Science alumni.
     """
     # Filter logs for Data Science alumni
-    ds_alumni_logs = df[(df['program_id'] == 3) &
+    ds_alumni_logs = df[(df['program_id'] == 'data science') &
                         (df.index > df['end_date']) &
                         (df['cohort'] != 'Staff')]
     
@@ -166,7 +170,7 @@ def plot_top_wb_alumni_lessons():
     Plots the top logged lessons for Web Development alumni.
     """
     # Filter logs for Web Development alumni
-    wb_alumni_logs = df[(df['program_id'] != 3) &
+    wb_alumni_logs = df[(df['program'] != 'data science') &
                         (df.index > df['end_date']) &
                         (df['cohort'] != 'Staff')]
     
