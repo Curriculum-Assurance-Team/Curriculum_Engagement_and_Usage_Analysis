@@ -1,6 +1,7 @@
 import pandas as pd
 import env
 import os
+from sqlalchemy import create_engine
 
 
 def get_connection(db, user=env.user, hostname=env.hostname, password=env.password):
