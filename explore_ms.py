@@ -73,16 +73,22 @@ def get_sql_data():
         
         # Replace program_id numbers with program names using the replace method
         program_mapping = {1: 'web dev', 2: 'web dev', 3: 'data science', 4: 'frontend'}
-        logs_df['program_id'].replace(program_mapping, inplace=True)
+        logs_df['program'] = logs_df['program_id'].replace(program_mapping)
         
         # Save the DataFrame as a CSV file
         logs_df.to_csv(filename, index=False)
         return logs_df
 
 
-
-
-
+# Define a function to get top lessons by program_id
+def get_top_lessons_by_program(logs_df, program):
+    grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
+                        .size().reset_index(name='count')
+    top_lessons = grouped_traffic.sort_values('count', ascending=False)
+    
+    return top_lessons[
+        (top_lessons['program'] == program) &
+        (~top_lessons['lesson'].isin(['/', 'appendix', 'index.html']))].head(10)
 
 
 
