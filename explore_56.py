@@ -143,3 +143,33 @@ def plot_top_wb_alumni_lessons():
     plt.tight_layout()
     sns.despine()
     plt.show()
+    
+
+def question2_2graph(logs_df):
+    '''This function groups data by cohort and lesson to determine the lesson with the highest and lowest counts by cohort'''
+    # Group data by cohort and lesson, then calculate the size (count of occurrences)
+    cohort2 = logs_df.groupby(['cohort', 'lesson']).size()
+    # Reset the index and rename the count column
+    cohort2 = cohort2.reset_index(name='count')
+    # Filter the DataFrame to show only the rows where lesson is '/' and  count in descending order
+    cohort2 = cohort2.loc[cohort2['lesson'] == '/'].sort_values(by='count', ascending=False)
+    # Plotting
+    plt.figure(figsize=(12, 6))
+    sns.barplot(data=cohort2, x='cohort', y='count', palette='Oranges')
+    plt.xlabel('Cohort')
+    plt.ylabel('Lesson / Count')
+    plt.title('Lesson with Highest Count by Cohort')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
+
+    
+def question2_2(logs_df):
+    '''This function groups data by cohort and lesson to determine the lesson with the highest and lowest counts by cohort'''
+    # Group data by cohort and lesson, then calculate the size (count of occurrences)
+    cohort2 = logs_df.groupby(['cohort', 'lesson']).size()
+    # Reset the index and rename the count column
+    cohort2 = cohort2.reset_index(name='count')
+    # Filter the DataFrame to show only the rows where lesson is '/' and  count in descending order
+    cohort2 = cohort2.loc[cohort2['lesson'] == '/'].sort_values(by='count', ascending=False)
+    return cohort2.head(), cohort2.tail()
