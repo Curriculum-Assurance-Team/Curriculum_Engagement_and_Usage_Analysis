@@ -128,6 +128,93 @@ def question2_1(logs_df):
 
 
 
+#######################################
+# Questions 3
+
+
+def question3_1(logs_df):
+    '''This function outlines the steps to find user engagement'''
+    # Calculate engagement for each user by counting unique views of curriculum
+    user_engagement = logs_df.groupby('user_id')['lesson'].nunique()
+    
+    # Set a threshold for low engagement (e.g., fewer than 3 unique lessons)
+    threshold = 3
+    
+    # Filter for students with low engagement
+    low_engagement_students = user_engagement[user_engagement < threshold]
+    
+    # Get information about these low engagement students
+    low_engagement_info = logs_df[logs_df['user_id'].isin(low_engagement_students.index)].sort_values('user_id').tail()
+    
+    # Count how many times each user accessed 'lesson' == '/'
+    lesson_count_slash = logs_df[logs_df['lesson'] == '/'].groupby('user_id').size()
+    
+    # Add the lesson count to the low_engagement_info DataFrame
+    low_engagement_info['lesson_count_slash'] = low_engagement_info['user_id'].map(lesson_count_slash)
+    
+    return low_engagement_info
+
+def question3_graph1(logs_df):
+    '''This graph finds user error and creates a theshold of 3 so any user with less than 3 will be filtered for low engagemet'''
+    # Calculate engagement for each user by counting unique lessons
+    user_engagement = logs_df.groupby('user_id')['lesson'].nunique()
+    
+    # Set a threshold for low engagement (e.g., fewer than 3 unique lessons)
+    threshold = 3
+    
+    # Filter for students with low engagement
+    low_engagement_students = user_engagement[user_engagement < threshold]
+    
+    # Create a bar plot
+    plt.figure(figsize=(10, 6))
+    le = plt.hist(user_engagement, bins=20, color='orange', edgecolor='black', alpha=0.7, label='Engagement Distribution')
+    plt.axvline(x=threshold, color='red', linestyle='dashed', linewidth=2, label='Threshold')
+    plt.scatter(low_engagement_students.index, [0] * len(low_engagement_students), color='red', label='Low Engagement Students')
+    plt.xlabel('Number of Unique Lessons')
+    plt.ylabel('Number of Students')
+    plt.title('Anomaly Detection: Engagement Distribution and Low Engagement Students')
+    plt.legend()
+    
+    # Add count numbers on bars
+    for p in le[2]:  # le[2] contains the patches
+        width = p.get_width()
+        height = p.get_height()
+        x, y = p.get_xy()
+        offset = width * 0.02  # Adjust the offset percentage as needed
+        plt.annotate(format(height, '.0f'), (x + width / 2., y + height), ha='center', va='center', xytext=(0, 5), textcoords='offset points')
+    
+    plt.tight_layout()
+    plt.show()
+    
+    
+
+# Questions 3
+#######################################
+
+
+#######################################
+# Questions 4
+
+# 4. Are there any suspicious IP addresses?
+
+
+def explore_ip_addresses(logs_df):
+    logs_df['ip_network_portion'] = logs_df['ip'].str.split('.').str[0]
+    
+    result1 = logs_df['ip_network_portion'].value_counts().head(10).to_frame().reset_index()
+    result1.rename(columns={'index': 'ip_network_portion',
+                            'ip_network_portion': 'log_count'}, inplace=True)
+    print('Most Common IP addresses (network portion)')
+    display(result1, '\n')    
+    
+    result2 = logs_df['ip_network_portion'].value_counts().tail(10).to_frame().reset_index()
+    result2.rename(columns={'index': 'ip_network_portion',
+                            'ip_network_portion': 'log_count'}, inplace=True)
+    print('Least Common IP addresses (network portion)')
+    display(result2)
+
+# Questions 4
+#######################################
 
 #######################################
 # Questions 5 and 6
@@ -137,11 +224,6 @@ def question2_1(logs_df):
 #
 # 5. At some point in 2019, the ability for students and alumni to access both curriculums should have been shut off. Do you see any evidence of that happening?
 # - Monthly average logs of data science and web dev students both declined greatly in the second half of 2019, indicating that this may be when this shutoff happened
-
-#
-# 6. What topics are grads continuing to reference after graduation and into their jobs (for each program)?
-# - Data Science: SQL, Classification, Anomaly Detection
-# - Web Dev: Spirng, HTML/CSS, Java
 
 def plot_monthly_avg_ds_logs(logs_df):
     """
@@ -213,6 +295,11 @@ def plot_monthly_avg_wd_logs(logs_df):
 
     
 #### Question 6
+#
+# 6. What topics are grads continuing to reference after graduation and into their jobs (for each program)?
+# - Data Science: SQL, Classification, Anomaly Detection
+# - Web Dev: Spirng, HTML/CSS, Java
+
 
 def plot_top_ds_alumni_lessons(logs_df):
     """
@@ -220,8 +307,8 @@ def plot_top_ds_alumni_lessons(logs_df):
     """
     logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
     # Filter logs for Data Science alumni
-    ds_alumni_logs = logs_df[(logs_df['program_id'] == 'data science') &
-                        (logs_df.index > df['end_date']) &
+    ds_alumni_logs = logs_df[(logs_df['program'] == 'data science') &
+                        (logs_df.index > logs_df['end_date']) &
                         (logs_df['cohort'] != 'Staff')]
     
     # Create a bar plot using Seaborn
@@ -250,7 +337,7 @@ def plot_top_wb_alumni_lessons(logs_df):
     logs_df['end_date'] = pd.to_datetime(logs_df['end_date'])
     # Filter logs for Web Development alumni
     wb_alumni_logs = logs_df[(logs_df['program'] != 'data science') &
-                        (logs_df.index > df['end_date']) &
+                        (logs_df.index > logs_df['end_date']) &
                         (logs_df['cohort'] != 'Staff')]
     
     # Extract and preprocess the value counts
@@ -265,7 +352,7 @@ def plot_top_wb_alumni_lessons(logs_df):
     # Set plot labels and title
     plt.xlabel('Lessons')
     plt.ylabel('Counts')
-    plt.title('Top Logged Lessons for Web Dev Alumni')
+    plt.title('Top Logged Lessons for Web Development Alumni')
 
     # Adjust layout and display plot
     plt.tight_layout()
