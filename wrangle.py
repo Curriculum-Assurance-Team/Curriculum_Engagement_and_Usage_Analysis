@@ -5,41 +5,40 @@ import os
 
 def get_connection(db, user=env.user, host=env.host, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
-
-def get_log_data():
+    
+def get_sql_data():
     '''
-    If the csv file exists, it is read and returned as a pandas DataFrame
+    If the CSV file exists, it is read and returned as a pandas DataFrame.
     If not, pandas reads in a SQL query that acquires log data from a MySQL database.
     The query is stored into a DataFrame, saved, and returned.
     '''
-    filename = 'logs.csv'
+    filename = 'curriculum_logs.csv'
     if os.path.isfile(filename):
-        return pd.read_csv(filename, index_col='date', parse_dates=True)
-    
-    df = pd.read_sql("""SELECT l.date, l.time,
-                                l.path as lesson,
-                                l.user_id, c.name,
-                                l.ip, c.start_date,
-                                c.end_date, c.program_id
-                        FROM logs l
-                        JOIN cohorts c ON c.id=l.cohort_id;""",
-                     get_connection('curriculum_logs'))
-    # Assuming 'data' is your DataFrame with the provided data
-    df['date'] = pd.to_datetime(df['date'] + ' ' + df['time'])
-    
-    # Drop the 'time' column
-    df = df.drop(['time'], axis=1)
-    df = df.set_index('date')
-    df['start_date'] = pd.to_datetime(df['start_date'])
-    df['end_date'] = pd.to_datetime(df['end_date'])
-    df['access_day'] = df.index.day_name()
-    df['access_month'] = df.index.month
-    df['access_year'] = df.index.year
-    
-    df.to_csv(filename)
-    
-    return df
-
+        return pd.read_csv(filename)
+    else:
+        # Define SQL query, database parameters, and filename
+        sql_query = """
+            SELECT l.date, l.time, l.path as lesson, l.user_id, c.name as cohort, c.program_id,
+                   l.ip, c.start_date, c.end_date
+            FROM logs l
+            JOIN cohorts c ON c.id=l.cohort_id;
+        """
+        db = 'curriculum_logs'
+        user = env.user  # Replace with the actual value
+        hostname = env.hostname  # Replace with the actual value
+        password = env.password  # Replace with the actual value
+        # Create a database connection using SQLAlchemy
+        connection_string = get_connection(db, user, hostname, password)
+        engine = create_engine(connection_string)
+        # Fetch data from the database and convert it into a DataFrame
+        logs_df = pd.read_sql(sql_query, get_connection('curriculum_logs'))
+        # Convert 'date' and 'time' columns to a single 'datetime' column
+        logs_df['date'] = pd.to_datetime(logs_df['date'] + ' ' + logs_df['time'])
+        logs_df = logs_df.drop(['time'], axis=1)  # Drop 'time' column
+        logs_df = logs_df.set_index('date')
+        # Save the DataFrame as a CSV file
+        logs_df.to_csv(filename, index=False)
+        return logs_df
 
 # # Upload with code
 # import wrangle as w
