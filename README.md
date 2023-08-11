@@ -20,8 +20,7 @@ The primary objectives are:
 4. Detect any potentially unauthorized access or suspicious activities, including unusual access patterns or indications of web scraping? Are there any indications of suspicious IP addresses?
 5. Has the access for students and alumni to both curriculums (web development to data science, data science to web development) been disabled as intended at some point in 2019? Confirm if this change was implemented and if so, when?
 6. Outline the topics that graduates continue to reference beyond their graduation and into their professional roles for both programs?
-7. Which lessons have recorded the lowest levels of access?
-8. Is there any additional information or insights that you believe would be pertinent for me to be aware of?
+
 
 ## **Data Dictionary**
 The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially containing 847,330 rows and 7 columns. The team distributed tasks to effectively utilize and manipulate the original dataframe in order to address the specified questions.
@@ -49,7 +48,7 @@ The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially co
 To successfully run/reproduce the final project notebook, please follow these steps:
 
 - Read this README.md document to familiarize yourself with the project details and key findings.
-- Before proceeding, ensure that you have the necessary database credentials. Get data set from csv  Create .gitignore for privacy if necessary
+- Before proceeding, ensure that you have the necessary database credentials for codeup(env). Convert dataset to csv  Create .gitignore for privacy if necessary
 - Clone the classification_project repository from my GitHub or download the following files: wrange.py and final_report.ipynb. -  - You can find these files in the project repository.
 - Open the final_report.ipynb notebook in your preferred Jupyter Notebook environment or any compatible Python environment.
 - Ensure that all necessary libraries or dependent programs are installed (e.g IO String). You may need to install additional packages if they are not already present in your environment.
@@ -60,6 +59,10 @@ To achieve these goals, we will conduct a comprehensive analysis of our curricul
 
 
 ## **Key Findings**
+- **Top Lesson Across Cohorts for Different Programs**
+- The "html-css" lesson consistently attracts the highest traffic across cohorts, indicating sustained engagement and interest within the Web Development program.
+- The lesson "1-fundamentals/1.1-intro-to-data-science" consistently garners the highest traffic across different cohorts within the Data Science program, suggesting it as a focal point for engagement and interest.
+
 - **Anomaly Detection and Engagement Analysis:**
   - Anomalies were uncovered by contrasting engagement levels with the '/' lesson, revealing unexpected cohort-specific trends.
   - The 'Darden' cohort exhibited remarkable engagement with the '/' lesson, indicating a potential anomaly that necessitates in-depth exploration.
@@ -85,7 +88,6 @@ The comprehensive analysis conducted to assess lesson popularity across programs
 
 ## **Recommendations**
   - Further qualitative research is recommended to delve into factors such as curriculum content, teaching methodologies, and cohort dynamics to uncover the root causes behind these anomalies.
-
   - Detecting low engagement early can facilitate timely support and tailored interventions to improve student outcomes.
   - To enhance engagement and promote effective learning, proactive measures like personalized assistance and supplementary resources should be considered for students displaying minimal curriculum interaction
   
