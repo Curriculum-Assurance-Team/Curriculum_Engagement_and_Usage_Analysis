@@ -378,30 +378,4 @@ def plot_top_wb_alumni_lessons(logs_df):
     sns.despine()
     plt.show()
 
-# Questions 7
-#######################################
-
-# Define a function to get least frequented lessons 
-
-def get_least_acessed_lessons(logs_df, program):
-    grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
-                        .size().reset_index(name='count')
-    lest_lessons = grouped_traffic.sort_values('count', ascending=True)
-    
-    # Filter for the specified program and remove unwanted lessons
-    program_least_lessons = least_lessons[
-        (least_lessons['program'] == program) &
-        (~least_lessons['lesson'].isin(['/', 'appendix', 'index.html']))
-    ]
-    
-    # Get the least frequented lesson 
-    least_lesson_across_cohorts = program_least_lessons.groupby('lesson')['count'].size().idxmax()
-
-
-    return program_least_lessons.head(10), least_lesson_across_cohorts
-
-
-
-
-
 
