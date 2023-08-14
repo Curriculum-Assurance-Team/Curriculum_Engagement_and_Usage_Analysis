@@ -378,4 +378,70 @@ def plot_top_wb_alumni_lessons(logs_df):
     sns.despine()
     plt.show()
 
+#######################################
+# Questions 1
+
+def remove_outliers(data, column_name):
+    '''Remove outliers using IQR method for a specified column'''
+    Q1 = data[column_name].quantile(0.25)
+    Q3 = data[column_name].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    return data[(data[column_name] >= lower_bound) & (data[column_name] <= upper_bound)]
+
+    
+# Define a function to get top lessons by program across cohorts
+def get_top_lessons_by_program(logs_df, program):
+    grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
+                        .size().reset_index(name='count')
+    top_lessons = grouped_traffic.sort_values('count', ascending=False)
+    
+    # Filter for the specified program and remove unwanted lessons
+    program_top_lessons = top_lessons[
+        (top_lessons['program'] == program) &
+        (~top_lessons['lesson'].isin(['/', 'appendix', 'index.html']))
+    ]
+    
+    # Get the top lesson across cohorts for the program
+    top_lesson_across_cohorts = program_top_lessons.groupby('lesson')['count'].size().idxmax()
+    
+    return program_top_lessons.head(10), top_lesson_across_cohorts
+#######################################
+# Questions 7
+def get_least_accessed_lessons_with_anomaly_detection(logs_df, program):
+    # Group and count the lesson accesses
+    grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
+                        .size().reset_index(name='count')
+    print(f"Initial grouped count: {len(grouped_traffic)}")
+    
+    # Use Isolation Forest for anomaly detection
+    model = IsolationForest(contamination=0.05)
+    grouped_traffic['anomaly_score'] = model.fit_predict(grouped_traffic[['count']])
+    
+    print(f"Anomalies Detected: {sum(grouped_traffic['anomaly_score'] == -1)}")
+    print(f"Non-Anomalies Detected: {sum(grouped_traffic['anomaly_score'] == 1)}")
+    
+    # Remove anomalies and keep only normal data
+    filtered_traffic = grouped_traffic[grouped_traffic['anomaly_score'] == 1]
+    print(f"Filtered traffic after removing anomalies: {len(filtered_traffic)}")
+    
+    # Filter for the specified program
+    program_traffic = filtered_traffic[filtered_traffic['program'] == program]
+    print(f"Program traffic for '{program}': {len(program_traffic)}")
+    
+    # Remove unwanted lessons
+    unwanted_lessons = ['/', 'appendix', 'index.html']
+    program_filtered_lessons = program_traffic[~program_traffic['lesson'].isin(unwanted_lessons)]
+    print(f"Lessons after removing unwanted ones: {len(program_filtered_lessons)}")
+    
+    if program_filtered_lessons.empty:
+        return None
+    
+    # Get the least accessed lesson across cohorts for the program
+    min_access_count = program_filtered_lessons['count'].min()
+    least_accessed_lessons = program_filtered_lessons[program_filtered_lessons['count'] == min_access_count]
+    
+    least_accessed_lesson_names = least_accessed_lessons['lesson'].head(10).tolist()
+    return least_accessed_lesson_names
 
