@@ -9,7 +9,6 @@ In preparation for the upcoming board meeting on Thursday afternoon, we are cond
 
 ## **Project Goals:**
 The primary objectives are:
-
 1. Analyze lesson popularity across programs, cohort engagement differences, and low engagement student profiles to enhance curriculum effectiveness.
 2. Investigate anomalies, security breaches, and cross-curriculum access, while assessing post-graduation knowledge impact.
 3. Uncover insights from underutilized lessons and unexpected trends, providing comprehensive data for informed decision-making.
@@ -21,8 +20,8 @@ The primary objectives are:
 4. Detect any potentially unauthorized access or suspicious activities, including unusual access patterns or indications of web scraping? Are there any indications of suspicious IP addresses?
 5. Has the access for students and alumni to both curriculums (web development to data science, data science to web development) been disabled as intended at some point in 2019? Confirm if this change was implemented and if so, when?
 6. Outline the topics that graduates continue to reference beyond their graduation and into their professional roles for both programs?
-7. Which lessons have recorded the lowest levels of access?
-8. Is there any additional information or insights that you believe would be pertinent for me to be aware of?
+
+
 ## **Data Dictionary**
 The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially containing 847,330 rows and 7 columns. The team distributed tasks to effectively utilize and manipulate the original dataframe in order to address the specified questions.
 
@@ -43,12 +42,13 @@ The data was acquired from CodeUP, LLC's 'curricular_logs' dataset, initially co
 |ip                           |ip            | 847330 non-null  object | Used for feature engineering  |
 |start_date                   |start_date    | 847330 non-null  object | Program Start Date            |
 |end_date                     |end_date      | 847330 non-null  object | Graduation Date               |
-    
+
+
 ## **Instructions to Reproduce the Final Project Notebook**
 To successfully run/reproduce the final project notebook, please follow these steps:
 
 - Read this README.md document to familiarize yourself with the project details and key findings.
-- Before proceeding, ensure that you have the necessary database credentials. Get data set from csv  Create .gitignore for privacy if necessary
+- Before proceeding, ensure that you have the necessary database credentials for codeup(env). Convert dataset to csv  Create .gitignore for privacy if necessary
 - Clone the classification_project repository from my GitHub or download the following files: wrange.py and final_report.ipynb. -  - You can find these files in the project repository.
 - Open the final_report.ipynb notebook in your preferred Jupyter Notebook environment or any compatible Python environment.
 - Ensure that all necessary libraries or dependent programs are installed (e.g IO String). You may need to install additional packages if they are not already present in your environment.
@@ -59,12 +59,42 @@ To achieve these goals, we will conduct a comprehensive analysis of our curricul
 
 
 ## **Key Findings**
-The outcome of this project will be a detailed in an report addressing each of the provided questions, along with any additional insights we uncover during our analysis. The report will provide you with the necessary information to discuss curriculum engagement, anomalies, and post-graduation trends during the upcoming board meeting, enabling informed decision-making and strategic planning.
+- **Top Lesson Across Cohorts for Different Programs**
+- The "html-css" lesson consistently attracts the highest traffic across cohorts, indicating sustained engagement and interest within the Web Development program.
+- The lesson "1-fundamentals/1.1-intro-to-data-science" consistently garners the highest traffic across different cohorts within the Data Science program, suggesting it as a focal point for engagement and interest.
 
-Please feel free to provide any additional guidance or clarification, and we will ensure that our analysis aligns with your expectations and needs.
+- **Anomaly Detection and Engagement Analysis:**
+  - Anomalies were uncovered by contrasting engagement levels with the '/' lesson, revealing unexpected cohort-specific trends.
+  - The 'Darden' cohort exhibited remarkable engagement with the '/' lesson, indicating a potential anomaly that necessitates in-depth exploration.
+  - Further qualitative research is recommended to delve into factors such as curriculum content, teaching methodologies, and cohort dynamics to uncover the root causes behind these anomalies.
+
+- **Low Engagement Student Profiles:**
+  - Analysis identified students with minimal curriculum interaction, engaging with fewer than three unique lessons.
+  - These low engagement profiles indicate potential learning challenges or missed opportunities.
+  - Limited lesson diversity was noted among the Low Engagement Students List, particularly in interactions with the curriculum 
+  '/'.
+- **Monthly Average Logs Analysis:**
+  - The data science and web development programs experienced a substantial decline in monthly average logs during the latter half of 2019.
+- **Decline in Data Science and Web Development Engagement:**
+  - Specific topics such as SQL, Classification, Anomaly Detection for Data Science and Spring, HTML/CSS, Java for Web Development exhibited decreased engagement.
+
+These findings collectively underscore the importance of ongoing monitoring, proactive interventions, and continuous curriculum refinement to ensure optimal learning experiences and outcomes for students across diverse cohorts and programs.
 
 
 ## **Conclusion**
+The comprehensive analysis conducted to assess lesson popularity across programs, cohort engagement differences, and low engagement student profiles has provided valuable insights into curriculum effectiveness. The methodology employed in this study successfully identified anomalies and trends that warrant further investigation, enhancing our understanding of student behavior and curriculum utilization. The observations made concerning engagement discrepancies within specific cohorts and the prevalence of low engagement students offer crucial avenues for targeted interventions and improvements. The integration of both quantitative and qualitative approaches has furnished a holistic perspective, enabling informed decision-making for curriculum enhancement.
+'/'.
 
 
 ## **Recommendations**
+  - Further qualitative research is recommended to delve into factors such as curriculum content, teaching methodologies, and cohort dynamics to uncover the root causes behind these anomalies.
+  - Detecting low engagement early can facilitate timely support and tailored interventions to improve student outcomes.
+  - To enhance engagement and promote effective learning, proactive measures like personalized assistance and supplementary resources should be considered for students displaying minimal curriculum interaction
+  
+
+## **Client Deliverables**
+The outcome of this project will be a detailed in an report addressing each of the provided questions, along with any additional insights we uncover during our analysis. The report will provide you with the necessary information to discuss curriculum engagement, anomalies, and post-graduation trends during the upcoming board meeting, enabling informed decision-making and strategic planning. Please feel free to provide any additional guidance or clarification, and we will ensure that our analysis aligns with your expectations and needs.
+
+
+
+
