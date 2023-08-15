@@ -23,10 +23,16 @@ from sklearn.dummy import DummyClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import IsolationForest
 import env
 from sqlalchemy import create_engine
 
+
+# def get_connection(db_name):
+#     '''
+#     This function uses my info from my env file to
+#     create a connection URL to access the Codeup db.
+#     '''
+#     return f'mysql+pymysql://{user}:{password}@{host}/{db_name}'
 
 def get_connection(db_name=env.db_name, user=env.user, host=env.host, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db_name}'
@@ -73,17 +79,6 @@ def get_sql_data():
         logs_df.to_csv(filename, index=False)
         return logs_df
 
-
-def remove_outliers(data, column_name):
-    '''Remove outliers using IQR method for a specified column'''
-    Q1 = data[column_name].quantile(0.25)
-    Q3 = data[column_name].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
-    return data[(data[column_name] >= lower_bound) & (data[column_name] <= upper_bound)]
-
-    
 # Define a function to get top lessons by program across cohorts
 def get_top_lessons_by_program(logs_df, program):
     grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
@@ -98,65 +93,102 @@ def get_top_lessons_by_program(logs_df, program):
     
     # Get the top lesson across cohorts for the program
     top_lesson_across_cohorts = program_top_lessons.groupby('lesson')['count'].size().idxmax()
-    
+
     return program_top_lessons.head(10), top_lesson_across_cohorts
+ 
+    
+ # Define a function to get least frequented lessons 
 
-
-
-# def get_least_accessed_lessons(logs_df, program):
-#     # Group data and get counts
-#     grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
-#                         .size().reset_index(name='count')
-    
-#     # Removing outliers from the count column
-#     filtered_traffic = remove_outliers(grouped_traffic, 'count')
-    
-#     # Sort by count to get least accessed lessons
-#     least_accessed_lessons = filtered_traffic.sort_values('count', ascending=True)
-    
-#     # Filter for the specified program and remove unwanted lessons
-#     program_least_accessed_lessons = least_accessed_lessons[
-#         (least_accessed_lessons['program'] == program) &
-#         (~least_accessed_lessons['lesson'].isin(['/', 'appendix', 'index.html']))
-#     ]
-    
-#     # Get the least accessed lesson across cohorts for the program
-#     least_accessed_lesson_across_cohorts = program_least_accessed_lessons.groupby('lesson')['count'].idxmin()
-    
-#     return program_least_accessed_lessons.head(10), least_accessed_lesson_across_cohorts
-
-def get_least_accessed_lessons_with_anomaly_detection(logs_df, program):
-    # Group and count the lesson accesses
+def get_least_acessed_lessons(logs_df, program):
     grouped_traffic = logs_df.groupby(['program', 'lesson', 'cohort']) \
                         .size().reset_index(name='count')
-    print(f"Initial grouped count: {len(grouped_traffic)}")
+    lest_lessons = grouped_traffic.sort_values('count', ascending=True)
     
-    # Use Isolation Forest for anomaly detection
-    model = IsolationForest(contamination=0.05)
-    grouped_traffic['anomaly_score'] = model.fit_predict(grouped_traffic[['count']])
+    # Filter for the specified program and remove unwanted lessons
+    program_least_lessons = least_lessons[
+        (least_lessons['program'] == program) &
+        (~least_lessons['lesson'].isin(['/', 'appendix', 'index.html']))
+    ]
     
-    print(f"Anomalies Detected: {sum(grouped_traffic['anomaly_score'] == -1)}")
-    print(f"Non-Anomalies Detected: {sum(grouped_traffic['anomaly_score'] == 1)}")
+    # Get the least frequented lesson 
+    least_lesson_across_cohorts = program_least_lessons.groupby('lesson')['count'].size().idxmax()
+
+
+    return program_least_lessons.head(10), least_lesson_across_cohorts
+
+
+
+
+# def load_data(file_path):
+#     # Load the data into a DataFrame
+#     df = pd.read_csv(file_path)
+#     return df
+
+# def most_traffic_lesson_per_program(df):
+#     # Group data by program and lesson, then count the access frequency
+#     program_most_traffic = df.groupby(['program', 'lesson']).size().reset_index(name='access_count')
     
-    # Remove anomalies and keep only normal data
-    filtered_traffic = grouped_traffic[grouped_traffic['anomaly_score'] == 1]
-    print(f"Filtered traffic after removing anomalies: {len(filtered_traffic)}")
+#     # Find the lesson with the highest access count per program
+#     most_traffic_per_program = program_most_traffic.groupby('program').apply(lambda x: x[x.access_count == x.access_count.max()])
+#     return most_traffic_per_program
+
+# def cohort_with_significantly_different_lesson(df):
+#     # Calculate the mean access count per lesson for each cohort
+#     cohort_lesson_mean = df.groupby(['cohort', 'lesson'])['access_count'].mean().reset_index()
     
-    # Filter for the specified program
-    program_traffic = filtered_traffic[filtered_traffic['program'] == program]
-    print(f"Program traffic for '{program}': {len(program_traffic)}")
+#     # Find cohorts with significantly different access counts for a lesson compared to other cohorts
+#     cohorts_with_difference = cohort_lesson_mean.groupby('lesson').apply(lambda x: x[x.access_count > x.access_count.mean() + x.access_count.std()])
+#     return cohorts_with_difference
+
+# def low_activity_students(df, threshold=5):
+#     # Find students with low activity based on the specified threshold
+#     low_activity_students = df[df.access_count < threshold]
+#     return low_activity_students
+
+# def identify_suspicious_activity(df):
+#     # Identify IP addresses with unusually high access counts
+#     suspicious_ips = df.groupby('ip').size().reset_index(name='access_count').sort_values('access_count', ascending=False)
+#     return suspicious_ips
+
+# def curriculum_access_changes(df, program_1, program_2):
+#     # Identify students who accessed both curriculums
+#     dual_access_students = df[(df.program == program_1) & (df.student_id.isin(df[df.program == program_2].student_id))]
+#     return dual_access_students
+
+# def frequently_referenced_topics(df, program):
+#     # Group data by program and lesson, then calculate mean access count
+#     program_lesson_mean = df[df.program == program].groupby('lesson')['access_count'].mean().reset_index()
     
-    # Remove unwanted lessons
-    unwanted_lessons = ['/', 'appendix', 'index.html']
-    program_filtered_lessons = program_traffic[~program_traffic['lesson'].isin(unwanted_lessons)]
-    print(f"Lessons after removing unwanted ones: {len(program_filtered_lessons)}")
+#     # Find lessons with above-average access counts
+#     frequent_lessons = program_lesson_mean[program_lesson_mean.access_count > program_lesson_mean.access_count.mean()]
+#     return frequent_lessons
+
+# def least_accessed_lessons(df):
+#     # Group data by lesson and calculate mean access count
+#     lesson_mean_access = df.groupby('lesson')['access_count'].mean().reset_index()
     
-    if program_filtered_lessons.empty:
-        return None
-    
-    # Get the least accessed lesson across cohorts for the program
-    min_access_count = program_filtered_lessons['count'].min()
-    least_accessed_lessons = program_filtered_lessons[program_filtered_lessons['count'] == min_access_count]
-    
-    least_accessed_lesson_names = least_accessed_lessons['lesson'].head(10).tolist()
-    return least_accessed_lesson_names
+#     # Find lessons with the lowest mean access counts
+#     least_accessed = lesson_mean_access.nsmallest(5, 'access_count')
+#     return least_accessed
+
+# # Load the data
+# data_file_path = "/Users/miattas/Downloads/anonymized-curriculum-access.csv"
+# data = load_data(data_file_path)
+
+# # Answer the questions
+# most_traffic = most_traffic_lesson_per_program(data)
+# significant_difference = cohort_with_significantly_different_lesson(data)
+# low_activity = low_activity_students(data)
+# suspicious_activity = identify_suspicious_activity(data)
+# dual_curriculum_access = curriculum_access_changes(data, 'web_dev', 'data_science')
+# frequent_topics = frequently_referenced_topics(data, 'web_dev')
+# least_accessed = least_accessed_lessons(data)
+
+# # Print or return the results as needed
+# print("Most Traffic Lesson per Program:\n", most_traffic)
+# print("\nCohorts with Significant Lesson Difference:\n", significant_difference)
+# print("\nLow Activity Students:\n", low_activity)
+# print("\nSuspicious Activity:\n", suspicious_activity)
+# print("\nStudents with Dual Curriculum Access:\n", dual_curriculum_access)
+# print("\nFrequently Referenced Topics:\n", frequent_topics)
+# print("\nLeast Accessed Lessons:\n", least_accessed)
